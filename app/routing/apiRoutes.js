@@ -13,13 +13,47 @@ module.exports = function(app){
 		});
 
 	app.post('/api/friends', function(req, res){
-		friendsZone.push(req.body);
-		
+		var friendMatch = ""; 
+		var friendPhoto = "";
+		var difference = 40;
+       
 
-		{
-			 if (err) console.log(err);
-		}
-		});
-	};
+        
+        friendsZone.forEach(function(friends) {
+        		
+            var matchesArray = [];
+            var matchDiff = 40;
 
-	
+          
+            function add(total, num) {
+                return total + num;
+            }
+
+            
+            for (var i = 0; i < friendZone.scores.length; i++) {
+                matchesArray.push(Math.abs(parseInt(req.body.scores[i]) - parseInt(friendZone.scores[i])));
+
+            }
+
+           matchDiff = matchesArray.reduce(add, 0);
+
+            
+            if (totalDifference < difference) {
+            		
+                difference = matchDiff;
+               
+                friendMatch = friendZone.name;
+                friendPhoto = friendZone.photo;
+            }
+        });
+		res.json({
+            name: friendMatch,
+            photo: friendPhoto
+        });
+
+        // This adds the new users sent data object to friends.js
+        friends.push(req.body);
+    });
+}
+
+
